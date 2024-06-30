@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Platform, PermissionsAndroid } from 'react-native';
-import Mapbox, { Camera, LocationPuck, MapView } from "@rnmapbox/maps";
+import Mapbox, { Camera, Images, LocationPuck, MapView, ShapeSource, SymbolLayer } from "@rnmapbox/maps";
+import {featureCollection,point }from '@turf/helpers'
+import pin from "../assets/pin.png"
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
@@ -36,8 +38,16 @@ export default function Map() {
 
   return (
     <MapView style={{ flex: 1 }} styleURL="mapbox://styles/mapbox/dark-v11">
-      <Camera followUserLocation followZoomLevel={16} />
+      <Camera followUserLocation followZoomLevel={10} />
      <LocationPuck puckBearingEnabled puckBearing="heading" pulsing={{isEnabled:true}} />
+
+     <ShapeSource id="scooters" shape={featureCollection([point([2.1589,41.3907],point([2.1589,41.3907]))])}>
+      <SymbolLayer id="scooter-icons" style={{
+        iconImage:'pin',
+
+      }}/>
+    <Images images={{pin}} />
+     </ShapeSource>
     </MapView>
   );
 }
